@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Basketball Menu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="menu-container" id="basketballMenu">
+        <!-- X only on main menu -->
+        <div class="close-button" id="closeBtn" onclick="closeMenu()">X</div>
+        <div class="back-button" id="backBtn" onclick="goBack()">↩</div>
+
+        <div class="logo">
+            <img src="images/basketball_logo.png" alt="Basketball Logo" class="logo-image">
+        </div>
+
+        <!-- Main Menu -->
+        <div class="main-menu" id="modeSelection">
+            <div class="section-title">Game Mode</div>
+
+            <button class="mode-button" onclick="showSolo()">
+                <span class="icon">
+                    <img src="images/iconos/icono_ball.png" alt="">
+                </span>
+                <span class="label">SOLO</span>
+            </button>
+
+            <button class="mode-button" onclick="showPVP()">
+                <span class="icon">
+                    <img src="images/iconos/icono_ball.png" alt="">
+                </span>
+                <span class="label">PVP</span>
+            </button>
+        </div>
+
+
+        <!-- SOLO -->
+        <div class="solo-menu" id="soloSection">
+            <div class="section-title">SOLO</div>
+            <div class="input-row centered">
+                <span class="input-label">Time</span>
+                <input type="number" id="soloTimeInput" min="1" placeholder="Minutes">
+            </div>
+            <div class="centered">
+                <button class="start-button" onclick="startSolo()">PLAY</button>
+            </div>
+        </div>
+
+        <!-- PVP -->
+        <div class="pvp-menu" id="pvpSection">
+            <div class="section-title">PVP</div>
+
+            <div class="pvp-settings-row">
+                <div class="pvp-setting">
+                    <label for="pvpMinutes">Minutes</label>
+                    <input type="number" id="pvpMinutes" min="1" placeholder="1-99">
+                </div>
+                <div class="pvp-setting">
+                    <label for="pvpRounds">Rounds</label>
+                    <input type="number" id="pvpRounds" min="1" placeholder="1-10">
+                </div>
+            </div>
+
+
+            <div class="team-box blue">
+                <input id="blueNameInput" placeholder="Blue Team" />
+                <button class="register-btn blue" onclick="registerTeam('blue')">Register</button>
+            </div>
+            <div class="team-box red">
+                <input id="redNameInput" placeholder="Red Team" />
+                <button class="register-btn red" onclick="registerTeam('red')">Register</button>
+            </div>
+        </div>
+    </div>
+    <div class="hud-container" id="basketballHud" style="display: none;">
+        <div class="hud-left">
+            <!-- Solo Mode: This one stays visible -->
+            <div class="hud-team solo-only" id="soloScoreContainer" style="display: none;">
+                <span class="hud-score-label">Score</span>: <span class="hud-score" id="soloScore">0</span>
+            </div>
+
+            <!-- PvP Mode: These get hidden during solo -->
+            <div class="hud-team blue" id="teamBlueContainer">
+                <span id="hudBlueName">Blue</span>: <span class="hud-score" id="hudBlueScore">0</span>
+            </div>
+            <div class="hud-team red" id="teamRedContainer">
+                <span id="hudRedName">Red</span>: <span class="hud-score" id="hudRedScore">0</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <div class="hud-timer">⏱ <span id="hudTimer">00:00</span></div>
+            <div class="hud-round" id="hudRoundContainer">🏀 Round <span id="hudRound">1</span> / <span
+                    id="hudTotalRounds">1</span></div>
+        </div>
+    </div>
+
+    <!-- Stamina Bar -->
+    <div class="stamina-container" id="staminaBar" style="display: none;">
+        <div class="stamina-icon">⚡</div>
+        <div class="stamina-bar-wrapper">
+            <div class="stamina-bar-bg">
+                <div class="stamina-bar-fill" id="staminaFill"></div>
+                <div class="stamina-bar-glow" id="staminaGlow"></div>
+            </div>
+        </div>
+        <div class="stamina-text" id="staminaText">100%</div>
+    </div>
+
+    <!-- Keybinds HUD at bottom -->
+    <div class="keybinds-hud" id="keybindsHud" style="display: none;">
+        <div class="keybind-item">
+            <span class="keybind-key">F</span>
+            <span class="keybind-label">Target</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">Wheel</span>
+            <span class="keybind-label">Distance</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">Space</span>
+            <span class="keybind-label">Shoot</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">L Click</span>
+            <span class="keybind-label">Dunk</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">R Click</span>
+            <span class="keybind-label">Pass</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">R</span>
+            <span class="keybind-label">Dodge</span>
+        </div>
+        <div class="keybind-item">
+            <span class="keybind-key">Q</span>
+            <span class="keybind-label">Steal</span>
+        </div>
+    </div>
+
+    <div id="lobbyHud" class="lobby-container" style="display: none;">
+        <div class="lobby-title">
+            🏀 <span>Match Lobby</span>
+        </div>
+        <div class="lobby-teams-row">
+            <div class="lobby-team lobby-blue">
+                <div class="team-header">
+                    <span id="lobbyBlueName">Blue Team</span> <span class="lobby-count" id="lobbyBlueCount">0</span>
+                </div>
+                <div class="player-list" id="lobbyBluePlayers"></div>
+            </div>
+            <div class="lobby-team lobby-red">
+                <div class="team-header">
+                    <span id="lobbyRedName">Red Team</span> <span class="lobby-count" id="lobbyRedCount">0</span>
+                </div>
+                <div class="player-list" id="lobbyRedPlayers"></div>
+            </div>
+        </div>
+        <div class="lobby-button-wrapper">
+            <button id="startMatchBtn" class="lobby-start" disabled>Start Match</button>
+            <button id="cancelMatchBtn" class="lobby-cancel">Cancel</button>
+        </div>
+    </div>
+    <div id="resultOverlay" class="hidden">
+        <div id="resultMessage"></div>
+    </div>
+    <div id="storeMenu" class="store-box" style="display: none;">
+        <!-- Logo centered above menu -->
+        <div class="logo-wrapper">
+            <img src="images/basketball_logo.png" class="store-logo">
+        </div>
+
+        <!-- Main Buttons -->
+        <div class="store-buttons" id="mainButtons">
+            <button onclick="proceedToBallMenu()">Ball</button>
+            <button onclick="closeShopMenu()">Close</button>
+        </div>
+
+        <!-- Ball selection grid (scrollable) -->
+        <div id="ballOptions" class="ball-grid hidden"></div>
+
+        <!-- Bottom Buttons -->
+        <div class="store-buttons hidden" id="ballButtons">
+            <button onclick="goBackToMainShop()">↩ Back</button>
+            <button id="purchaseBtn" class="purchase-button hidden" onclick="purchaseBall()">Purchase</button>
+        </div>
+    </div>
+
+    <script>
+        // Store team data per spot
+        let teamsPerSpot = {}; // { [spot]: { blue: string, red: string } }
+        let registeredByPerSpot = {}; // { [spot]: { blue: playerID, red: playerID } }
+        let myRegisteredTeamPerSpot = {}; // { [spot]: "blue" | "red" | null }
+
+        let hudInterval = null;
+        let currentHudSpot = null;
+        let currentLobbySpot = null;
+        let myClientID = null;
+        let selectedBallIndex = null;
+        let blockedModesPerSpot = {}; // Store blocked modes per spot: { [spot]: { solo: bool, pvp: bool } }
+        let lobbyPlayers = { blue: [], red: [] }; // Store player names for lobby
+
+        window.addEventListener('message', function (event) {
+            const data = event.data;
+
+            if (data.transactionType === "playSound") {
+                const audio = new Audio(data.transactionFile);
+                audio.volume = 0.2;
+                audio.play().catch(err => console.warn("Audio play failed:", err));
+            }
+            if (data.type === "show") {
+                if (data.spot === undefined) return; // ✅ Skip if spot not defined
+                currentHudSpot = data.spot;
+
+                if (data.myID !== undefined) myClientID = data.myID;
+
+                // Initialize spot data if not exists
+                if (!teamsPerSpot[data.spot]) {
+                    teamsPerSpot[data.spot] = { blue: null, red: null };
+                }
+                if (!registeredByPerSpot[data.spot]) {
+                    registeredByPerSpot[data.spot] = { blue: null, red: null };
+                }
+                if (!blockedModesPerSpot[data.spot]) {
+                    blockedModesPerSpot[data.spot] = { solo: false, pvp: false };
+                }
+
+                // Update spot-specific data
+                if (data.registeredBy) registeredByPerSpot[data.spot] = data.registeredBy;
+                myRegisteredTeamPerSpot[data.spot] = data.registered !== undefined ? data.registered : null;
+
+                console.log("Menu opened - spot:", data.spot, "myRegisteredTeam:", myRegisteredTeamPerSpot[data.spot]);
+
+                // Update blocked modes for this spot
+                blockedModesPerSpot[data.spot].solo = data.soloBlocked || false;
+                blockedModesPerSpot[data.spot].pvp = data.pvpBlocked || false;
+
+                document.getElementById('basketballMenu').style.display = 'block';
+
+                updateTeamNames(data.spot, data.teams || {});
+
+                const myTeam = myRegisteredTeamPerSpot[data.spot];
+                if (!myTeam) {
+                    document.getElementById('modeSelection').style.display = 'block';
+                    document.getElementById('pvpSection').style.display = 'none';
+                    document.getElementById('soloSection').style.display = 'none';
+                    // Main menu: Hide back button, show close button
+                    document.getElementById('backBtn').style.display = 'none';
+                    document.getElementById('closeBtn').style.display = 'block';
+                } else {
+                    document.getElementById('modeSelection').style.display = 'none';
+                    document.getElementById('pvpSection').style.display = 'block';
+                    document.getElementById('soloSection').style.display = 'none';
+                    // PVP registered page: Hide both buttons (player is locked in)
+                    document.getElementById('backBtn').style.display = 'none';
+                    document.getElementById('closeBtn').style.display = 'block';
+                }
+
+                // Apply blocking after displaying sections
+                applyBlockedModes();
+            }
+            else if (data.type === "hide") {
+                closeMenu();
+            }
+            else if (data.type === "updateTeams") {
+                // Only update if this is for the currently viewed spot
+                if (data.spot !== undefined && currentHudSpot === data.spot) {
+                    // Initialize spot data if not exists
+                    if (!registeredByPerSpot[data.spot]) {
+                        registeredByPerSpot[data.spot] = { blue: null, red: null };
+                    }
+                    if (!blockedModesPerSpot[data.spot]) {
+                        blockedModesPerSpot[data.spot] = { solo: false, pvp: false };
+                    }
+
+                    if (data.registeredBy) registeredByPerSpot[data.spot] = data.registeredBy;
+                    if (data.soloBlocked !== undefined) blockedModesPerSpot[data.spot].solo = data.soloBlocked;
+                    if (data.pvpBlocked !== undefined) blockedModesPerSpot[data.spot].pvp = data.pvpBlocked;
+
+                    updateTeamNames(data.spot, data.teams);
+                }
+            }
+            else if (data.type === "updateBlockedModes") {
+                // Initialize if not exists
+                if (!blockedModesPerSpot[data.spot]) {
+                    blockedModesPerSpot[data.spot] = { solo: false, pvp: false };
+                }
+
+                // Update blocked modes for this spot
+                blockedModesPerSpot[data.spot].solo = data.soloBlocked || false;
+                blockedModesPerSpot[data.spot].pvp = data.pvpBlocked || false;
+
+                // Only apply to UI if menu is currently open for this spot
+                if (data.spot === currentHudSpot) {
+                    applyBlockedModes();
+                }
+            }
+            else if (data.type === "resetUI") {
+                const spot = data.spot || currentHudSpot;
+
+                // Reset spot-specific data
+                if (spot !== null) {
+                    teamsPerSpot[spot] = { blue: null, red: null };
+                    registeredByPerSpot[spot] = { blue: null, red: null };
+                    myRegisteredTeamPerSpot[spot] = null;
+                    blockedModesPerSpot[spot] = { solo: false, pvp: false };
+                }
+
+                // Reset all input fields
+                document.getElementById('blueNameInput').value = "";
+                document.getElementById('redNameInput').value = "";
+                document.getElementById('pvpMinutes').value = "";
+                document.getElementById('pvpRounds').value = "";
+                document.getElementById('soloTimeInput').value = "";
+
+                // Unlock all inputs
+                document.getElementById('blueNameInput').disabled = false;
+                document.getElementById('redNameInput').disabled = false;
+                document.getElementById('pvpMinutes').disabled = false;
+                document.getElementById('pvpRounds').disabled = false;
+                document.getElementById('soloTimeInput').disabled = false;
+
+                // Unlock and reset all buttons
+                const blueRegisterBtn = document.querySelector('.register-btn.blue');
+                const redRegisterBtn = document.querySelector('.register-btn.red');
+                const soloStartBtn = document.querySelector('.start-button');
+
+                if (blueRegisterBtn) {
+                    blueRegisterBtn.disabled = false;
+                    blueRegisterBtn.classList.remove('disabled');
+                    blueRegisterBtn.style.opacity = '1';
+                    blueRegisterBtn.style.cursor = 'pointer';
+                }
+
+                if (redRegisterBtn) {
+                    redRegisterBtn.disabled = false;
+                    redRegisterBtn.classList.remove('disabled');
+                    redRegisterBtn.style.opacity = '1';
+                    redRegisterBtn.style.cursor = 'pointer';
+                }
+
+                if (soloStartBtn) {
+                    soloStartBtn.disabled = false;
+                    soloStartBtn.style.opacity = '1';
+                    soloStartBtn.style.cursor = 'pointer';
+                }
+
+                // Clear lobby player lists
+                lobbyPlayers = { blue: [], red: [] };
+                updateLobbyPlayerLists();
+
+                // Reset the start match button state
+                const startMatchBtn = document.getElementById('startMatchBtn');
+                if (startMatchBtn) {
+                    startMatchBtn.disabled = true;
+                    startMatchBtn.classList.remove('enabled');
+                }
+
+                // Reset teams display if menu is open for this spot
+                if (currentHudSpot !== null) {
+                    updateTeamNames(currentHudSpot, {});
+                }
+            } else if (data.type === "showSoloHud") {
+                currentHudSpot = data.spot;
+
+                const hud = document.getElementById('basketballHud');
+                const soloContainer = document.getElementById('soloScoreContainer');
+                const soloScore = document.getElementById('soloScore');
+                const blueContainer = document.getElementById('teamBlueContainer');
+                const redContainer = document.getElementById('teamRedContainer');
+                const roundContainer = document.getElementById('hudRoundContainer');
+
+                hud.style.display = 'flex';
+                document.getElementById('keybindsHud').style.display = 'flex';
+                soloContainer.style.display = 'block';
+
+                soloScore.textContent = data.soloScore || 0;
+
+                blueContainer.style.display = 'none';
+                redContainer.style.display = 'none';
+                roundContainer.style.display = 'none';
+
+                const timerElement = document.getElementById('hudTimer');
+                if (hudInterval) clearInterval(hudInterval);
+                let remaining = data.time || 0;
+                const updateTimer = () => {
+                    const mins = Math.floor(remaining / 60);
+                    const secs = remaining % 60;
+                    timerElement.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                    if (remaining > 0) remaining--;
+                };
+                updateTimer();
+                hudInterval = setInterval(updateTimer, 1000);
+            } else if (data.type === "hideSoloHud" && data.spot === currentHudSpot) {
+                document.getElementById("basketballHud").style.display = "none";
+                document.getElementById('keybindsHud').style.display = 'none';
+                currentHudSpot = null;
+            } else if (data.type === "updateScoreHud" && data.spot === currentHudSpot) {
+                document.getElementById("hudBlueScore").innerText = data.teamA;
+                document.getElementById("hudRedScore").innerText = data.teamB;
+            } else if (data.type === "updateSoloScore" && data.spot === currentHudSpot) {
+                document.getElementById('soloScore').textContent = data.score || 0;
+            } else if (data.type === "showLobby") {
+                currentLobbySpot = data.spot;
+
+                document.getElementById('lobbyHud').style.display = 'flex';
+                document.getElementById('lobbyBlueName').textContent = data.blueName || 'Blue Team';
+                document.getElementById('lobbyRedName').textContent = data.redName || 'Red Team';
+                document.getElementById('lobbyBlueCount').textContent = data.teamA || 0;
+                document.getElementById('lobbyRedCount').textContent = data.teamB || 0;
+
+                // Update player lists
+                if (data.bluePlayers) lobbyPlayers.blue = data.bluePlayers;
+                if (data.redPlayers) lobbyPlayers.red = data.redPlayers;
+                updateLobbyPlayerLists();
+
+                const btn = document.getElementById('startMatchBtn');
+                console.log('[LOBBY] Button state:', data.buttonEnabled, 'TeamA:', data.teamA, 'TeamB:', data.teamB);
+                console.log('[LOBBY] Current button disabled:', btn.disabled, 'has enabled class:', btn.classList.contains('enabled'));
+
+                // Force clear all states
+                btn.classList.remove('enabled');
+                btn.classList.remove('disabled');
+                btn.removeAttribute('disabled');
+
+                // Set the correct state
+                if (data.buttonEnabled) {
+                    btn.disabled = false;
+                    btn.classList.add('enabled');
+                    console.log('[LOBBY] Button ENABLED - classList:', btn.classList.value, 'disabled attr:', btn.disabled);
+                } else {
+                    btn.disabled = true;
+                    btn.classList.remove('enabled');
+                    console.log('[LOBBY] Button DISABLED - classList:', btn.classList.value, 'disabled attr:', btn.disabled);
+                }
+            } else if (data.type === "hideLobby") {
+                // Hide lobby if it matches the spot OR if no specific spot is needed (game end)
+                if (!data.spot || data.spot === currentLobbySpot) {
+                    document.getElementById("lobbyHud").style.display = "none";
+                    currentLobbySpot = null;
+
+                    // Clear lobby player lists and counts
+                    lobbyPlayers = { blue: [], red: [] };
+                    document.getElementById('lobbyBlueCount').textContent = 0;
+                    document.getElementById('lobbyRedCount').textContent = 0;
+                    updateLobbyPlayerLists();
+
+                    // Reset the start match button state
+                    const btn = document.getElementById('startMatchBtn');
+                    btn.disabled = true;
+                    btn.classList.remove('enabled');
+                }
+            } else if (data.type === "showHud") {
+                currentHudSpot = data.spot;
+                console.log('[HUD] Showing HUD, freezeTimer:', data.freezeTimer, 'time:', data.time);
+
+                document.getElementById("basketballHud").style.display = "flex";
+                document.getElementById('keybindsHud').style.display = 'flex';
+
+                document.getElementById("soloScoreContainer").style.display = "none"; // Hide solo mode score
+                document.getElementById("teamBlueContainer").style.display = "block";
+                document.getElementById("teamRedContainer").style.display = "block";
+                document.getElementById("hudRoundContainer").style.display = "block";
+
+                document.getElementById("hudBlueName").textContent = data.blueName || "Blue";
+                document.getElementById("hudRedName").textContent = data.redName || "Red";
+                document.getElementById("hudBlueScore").textContent = data.blueScore || 0;
+                document.getElementById("hudRedScore").textContent = data.redScore || 0;
+                document.getElementById("hudRound").textContent = data.round || 1;
+                document.getElementById("hudTotalRounds").textContent = data.totalRounds || 1;
+
+                const timerElement = document.getElementById("hudTimer");
+                let remaining = data.time || 0;
+
+                if (hudInterval) {
+                    clearInterval(hudInterval);
+                    hudInterval = null;
+                }
+
+                const updateTimer = () => {
+                    const mins = Math.floor(remaining / 60);
+                    const secs = remaining % 60;
+                    timerElement.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                    if (remaining > 0) remaining--;
+                };
+
+                // Show the initial time
+                updateTimer();
+
+                // Only start the countdown if freezeTimer is NOT set
+                if (!data.freezeTimer) {
+                    console.log('[HUD] Starting countdown immediately (no freeze)');
+                    hudInterval = setInterval(updateTimer, 1000);
+                } else {
+                    console.log('[HUD] Timer frozen, waiting for startHudCountdown signal');
+                }
+            } else if (data.type === "startHudCountdown") {
+                // Start the countdown after the freeze period
+                if (data.spot === currentHudSpot) {
+                    console.log('[HUD] Starting countdown after freeze');
+                    const timerElement = document.getElementById("hudTimer");
+                    const currentTime = timerElement.textContent.split(':');
+                    let remaining = parseInt(currentTime[0]) * 60 + parseInt(currentTime[1]);
+
+                    console.log('[HUD] Current time:', currentTime, 'Remaining seconds:', remaining);
+
+                    // Clear any existing interval first
+                    if (hudInterval) {
+                        clearInterval(hudInterval);
+                    }
+
+                    const updateTimer = () => {
+                        const mins = Math.floor(remaining / 60);
+                        const secs = remaining % 60;
+                        timerElement.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                        if (remaining > 0) remaining--;
+                    };
+
+                    hudInterval = setInterval(updateTimer, 1000);
+                    console.log('[HUD] Countdown started, interval ID:', hudInterval);
+                }
+            } else if (data.type === "hideHud" && data.spot === currentHudSpot) {
+                document.getElementById("basketballHud").style.display = "none";
+                document.getElementById('keybindsHud').style.display = 'none';
+                currentHudSpot = null;
+            } else if (data.type === "showResult") {
+                showResultMessage(data.result);
+            } else if (data.action === "start:showMainMenu") {
+                document.getElementById("storeMenu").style.display = "block";
+            } else if (data.type === "updateLobbyButton" && data.spot === currentLobbySpot) {
+                const btn = document.getElementById('startMatchBtn');
+                console.log('[UPDATE BUTTON] Button state:', data.buttonEnabled);
+
+                // Force clear all states
+                btn.classList.remove('enabled');
+                btn.classList.remove('disabled');
+                btn.removeAttribute('disabled');
+
+                // Set the correct state
+                if (data.buttonEnabled) {
+                    btn.disabled = false;
+                    btn.classList.add('enabled');
+                    console.log('[UPDATE BUTTON] Button ENABLED - classList:', btn.classList.value);
+                } else {
+                    btn.disabled = true;
+                    console.log('[UPDATE BUTTON] Button DISABLED - classList:', btn.classList.value);
+                }
+            } else if (data.type === "showStamina") {
+                document.getElementById('staminaBar').style.display = 'flex';
+                updateStaminaBar(data.stamina || 100);
+            } else if (data.type === "hideStamina") {
+                document.getElementById('staminaBar').style.display = 'none';
+            } else if (data.type === "updateStamina") {
+                updateStaminaBar(data.stamina || 0);
+            }
+        });
+
+        // Stamina bar update function
+        function updateStaminaBar(stamina) {
+            const fill = document.getElementById('staminaFill');
+            const glow = document.getElementById('staminaGlow');
+            const text = document.getElementById('staminaText');
+
+            // Clamp stamina between 0 and 100
+            stamina = Math.max(0, Math.min(100, stamina));
+
+            // Update bar width
+            fill.style.width = stamina + '%';
+            glow.style.width = stamina + '%';
+
+            // Update text
+            text.textContent = Math.round(stamina) + '%';
+
+            // Change color based on stamina level
+            if (stamina > 60) {
+                fill.style.background = 'linear-gradient(90deg, #00ff88, #00cc66)';
+                glow.style.boxShadow = '0 0 15px #00ff88, 0 0 30px #00ff88';
+            } else if (stamina > 30) {
+                fill.style.background = 'linear-gradient(90deg, #ffcc00, #ff9900)';
+                glow.style.boxShadow = '0 0 15px #ffcc00, 0 0 30px #ffcc00';
+            } else {
+                fill.style.background = 'linear-gradient(90deg, #ff4444, #cc0000)';
+                glow.style.boxShadow = '0 0 15px #ff4444, 0 0 30px #ff4444';
+                // Add pulse animation when low
+                fill.style.animation = 'staminaPulse 0.5s ease-in-out infinite';
+            }
+
+            if (stamina > 30) {
+                fill.style.animation = 'none';
+            }
+        }
+
+
+        function showBasketballHUD(data) {
+            document.getElementById('basketballHud').style.display = 'flex';
+            document.getElementById('hudBlueName').textContent = data.blueName || 'Blue';
+            document.getElementById('hudRedName').textContent = data.redName || 'Red';
+            document.getElementById('hudBlueScore').textContent = data.blueScore || 0;
+            document.getElementById('hudRedScore').textContent = data.redScore || 0;
+            document.getElementById('hudRound').textContent = data.round || 1;
+            document.getElementById('hudTotalRounds').textContent = data.totalRounds || 1;
+
+            // Timer countdown (in seconds)
+            if (hudInterval) clearInterval(hudInterval);
+            let remaining = data.time || 0;
+            const timerElement = document.getElementById('hudTimer');
+            const updateTimer = () => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerElement.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (remaining > 0) remaining--;
+            };
+            updateTimer();
+            hudInterval = setInterval(updateTimer, 1000);
+        }
+
+        function hideBasketballHUD() {
+            document.getElementById('basketballHud').style.display = 'none';
+            if (hudInterval) clearInterval(hudInterval);
+        }
+
+
+        function closeMenu() {
+            document.getElementById('basketballMenu').style.display = 'none';
+            fetch(`https://${GetParentResourceName()}/closeMenu`, { method: 'POST' });
+        }
+
+        function goBack() {
+            document.getElementById('soloSection').style.display = 'none';
+            document.getElementById('pvpSection').style.display = 'none';
+            document.getElementById('modeSelection').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('closeBtn').style.display = 'block';
+        }
+
+        function showSolo() {
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('soloSection').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('closeBtn').style.display = 'none';
+        }
+
+        function showPVP() {
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('pvpSection').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('closeBtn').style.display = 'none';
+        }
+
+        function startSolo() {
+            const time = parseInt(document.getElementById('soloTimeInput').value);
+            if (!isNaN(time) && time > 0) {
+                fetch(`https://${GetParentResourceName()}/startSolo`, {
+                    method: 'POST',
+                    body: JSON.stringify({ time: time })
+                });
+            }
+        }
+        function registerTeam(team) {
+            const spot = currentHudSpot;
+            if (spot === null) return;
+
+            const inputId = team === 'blue' ? 'blueNameInput' : 'redNameInput';
+            const nameField = document.getElementById(inputId);
+            const name = nameField.value.trim();
+
+            const minutes = parseInt(document.getElementById('pvpMinutes').value) || 0;
+            const rounds = parseInt(document.getElementById('pvpRounds').value) || 0;
+
+            // Get spot-specific registration status
+            const myTeam = myRegisteredTeamPerSpot[spot];
+            const teams = teamsPerSpot[spot] || { blue: null, red: null };
+
+            // Allow registration to existing teams (name already set) if player not registered yet
+            if (!myTeam) {
+                // Use team name from input if it's still enabled, otherwise fallback to existing
+                const finalName = nameField.disabled ? teams[team] : name;
+
+                if (finalName) {
+                    fetch(`https://${GetParentResourceName()}/registerTeam`, {
+                        method: 'POST',
+                        body: JSON.stringify({ team, name: finalName, minutes, rounds })
+                    });
+
+                    myRegisteredTeamPerSpot[spot] = team;
+                }
+            }
+        }
+
+        function proceedToBallMenu() {
+            fetch(`https://${GetParentResourceName()}/Basketball-proceedToMenu`, {
+                method: "POST"
+            });
+
+            showBallOptions(); // Display designs
+
+            document.getElementById("mainButtons").classList.add("hidden");
+            document.getElementById("ballButtons").classList.remove("hidden");
+        }
+
+        function showBallOptions() {
+            const container = document.getElementById("ballOptions");
+            container.innerHTML = "";
+            container.classList.remove("hidden");
+
+            fetch(`https://${GetParentResourceName()}/Basketball-getDesignCount`, {
+                method: "POST",
+                body: JSON.stringify({})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const count = data.designCount || 16;
+                    for (let i = 1; i <= count; i++) {
+                        const img = document.createElement("img");
+                        img.src = `images/ball_png/ball_${i}.png`;
+                        img.onclick = () => {
+                            selectedBallIndex = i;
+                            fetch(`https://${GetParentResourceName()}/Basketball-designSelected`, {
+                                method: "POST",
+                                body: JSON.stringify({ ballIndex: i })
+                            });
+                            document.getElementById("purchaseBtn").classList.remove("hidden");
+                        };
+                        container.appendChild(img);
+                    }
+                });
+        }
+
+        function goBackToMainShop() {
+            fetch(`https://${GetParentResourceName()}/Basketball-goBack`, {
+                method: "POST",
+                body: JSON.stringify({ currentPage: "mainMenu" })
+            });
+
+            document.getElementById("ballOptions").classList.add("hidden");
+            document.getElementById("purchaseBtn").classList.add("hidden");
+
+            document.getElementById("mainButtons").classList.remove("hidden");
+            document.getElementById("ballButtons").classList.add("hidden");
+        }
+
+
+        function closeShopMenu() {
+            document.getElementById("storeMenu").style.display = "none"; // ✅ Hide the store manually
+            fetch(`https://${GetParentResourceName()}/Basketball-closeMenu`, { method: "POST" });
+        }
+
+
+        function purchaseBall() {
+            if (selectedBallIndex !== null) {
+                fetch(`https://${GetParentResourceName()}/Basketball-purchaseItem`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        type: "Ball",
+                        ballIndex: selectedBallIndex
+                    })
+                });
+            }
+        }
+
+        window.onload = () => {
+            document.getElementById("resultOverlay").classList.add("hidden");
+            document.getElementById("resultMessage").textContent = ""; // Clear any default text
+        };
+        function showResultMessage(result) {
+            const overlay = document.getElementById("resultOverlay");
+            const message = document.getElementById("resultMessage");
+
+            overlay.classList.remove("hidden");
+            overlay.style.display = "flex";
+
+            if (result === "win") {
+                message.innerHTML = "🏆<br>VICTORY!<br><span style='font-size: 32px;'>Your Team Dominates!</span>";
+                message.style.color = "#00FF99";
+                message.style.textShadow = "0 0 30px #00FF99, 0 0 60px #00FF99, 0 0 90px #00FF99";
+            } else if (result === "lose") {
+                message.innerHTML = "💀<br>DEFEAT<br><span style='font-size: 32px;'>Better Luck Next Time!</span>";
+                message.style.color = "#FF4444";
+                message.style.textShadow = "0 0 30px #FF4444, 0 0 60px #FF4444, 0 0 90px #FF4444";
+            } else if (result === "draw") {
+                message.innerHTML = "⚖️<br>DRAW!<br><span style='font-size: 32px;'>Evenly Matched!</span>";
+                message.style.color = "#FFD700";
+                message.style.textShadow = "0 0 30px #FFD700, 0 0 60px #FFD700, 0 0 90px #FFD700";
+            }
+
+            setTimeout(() => {
+                overlay.classList.add("hidden");
+                overlay.style.display = "none";
+            }, 7000);
+        }
+
+        function updateTeamNames(spot, teams) {
+            // Update teams for this spot
+            if (!teamsPerSpot[spot]) {
+                teamsPerSpot[spot] = { blue: null, red: null };
+            }
+            teamsPerSpot[spot].blue = teams.blue || null;
+            teamsPerSpot[spot].red = teams.red || null;
+
+            const blueInput = document.getElementById('blueNameInput');
+            const redInput = document.getElementById('redNameInput');
+            const minutesInput = document.getElementById('pvpMinutes');
+            const roundsInput = document.getElementById('pvpRounds');
+
+            const blueButton = document.querySelector('.register-btn.blue');
+            const redButton = document.querySelector('.register-btn.red');
+            const soloStart = document.querySelector('.start-button');
+
+            // Get spot-specific data
+            const registeredBy = registeredByPerSpot[spot] || { blue: null, red: null };
+            const myTeam = myRegisteredTeamPerSpot[spot];
+            const blueTeam = teamsPerSpot[spot].blue;
+            const redTeam = teamsPerSpot[spot].red;
+
+            const lockSettings = !!registeredBy.blue || !!registeredBy.red;
+            const alreadyRegistered = myTeam !== null && myTeam !== undefined;
+
+            // Lock team name inputs if names are already set
+            blueInput.disabled = !!blueTeam;
+            redInput.disabled = !!redTeam;
+
+            // Logic to allow joining existing teams
+            blueButton.disabled = (myTeam && myTeam !== "blue") || false;
+            redButton.disabled = (myTeam && myTeam !== "red") || false;
+
+            // If this player is already registered on a team, disable both buttons
+            if (myTeam === "blue") {
+                blueButton.disabled = true;
+            } else if (myTeam === "red") {
+                redButton.disabled = true;
+            }
+
+            // Gray out disabled buttons
+            blueButton.classList.toggle("disabled", blueButton.disabled);
+            redButton.classList.toggle("disabled", redButton.disabled);
+
+            // Lock match config settings after either team is registered
+            minutesInput.disabled = lockSettings;
+            roundsInput.disabled = lockSettings;
+            soloStart.disabled = lockSettings;
+
+            // Reapply blocked modes after updating team names
+            applyBlockedModes();
+        }
+
+        function closeMenu() {
+            document.getElementById('basketballMenu').style.display = 'none';
+            fetch(`https://${GetParentResourceName()}/closeMenu`, { method: 'POST' });
+        }
+
+        document.getElementById('startMatchBtn').addEventListener('click', () => {
+            if (!currentLobbySpot) return;
+
+            const btn = document.getElementById('startMatchBtn');
+            btn.disabled = true;
+            btn.classList.remove('enabled');
+            btn.classList.add('disabled'); // optional: if you have a gray style class
+
+            fetch(`https://${GetParentResourceName()}/startMatch`, {
+                method: 'POST',
+                body: JSON.stringify({ spot: currentLobbySpot })
+            });
+        });
+
+        document.getElementById('cancelMatchBtn').addEventListener('click', () => {
+            if (!currentLobbySpot) return;
+
+            fetch(`https://${GetParentResourceName()}/cancelMatch`, {
+                method: 'POST',
+                body: JSON.stringify({ spot: currentLobbySpot })
+            });
+        });
+
+        function updateLobbyPlayerLists() {
+            const blueList = document.getElementById('lobbyBluePlayers');
+            const redList = document.getElementById('lobbyRedPlayers');
+
+            // Clear existing lists
+            blueList.innerHTML = '';
+            redList.innerHTML = '';
+
+            // Add blue team players
+            lobbyPlayers.blue.forEach(playerName => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-name';
+                playerDiv.textContent = playerName;
+                blueList.appendChild(playerDiv);
+            });
+
+            // Add red team players
+            lobbyPlayers.red.forEach(playerName => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-name';
+                playerDiv.textContent = playerName;
+                redList.appendChild(playerDiv);
+            });
+        }
+
+        function applyBlockedModes() {
+            const soloStartBtn = document.querySelector('.start-button');
+            const blueRegisterBtn = document.querySelector('.register-btn.blue');
+            const redRegisterBtn = document.querySelector('.register-btn.red');
+
+            // Get blocked modes for the current spot
+            const currentBlockedModes = blockedModesPerSpot[currentHudSpot] || { solo: false, pvp: false };
+            const soloBlocked = currentBlockedModes.solo;
+            const pvpBlocked = currentBlockedModes.pvp;
+
+            // Block solo start button if PVP is active
+            if (soloStartBtn) {
+                soloStartBtn.disabled = soloBlocked;
+                soloStartBtn.style.opacity = soloBlocked ? '0.5' : '1';
+                soloStartBtn.style.cursor = soloBlocked ? 'not-allowed' : 'pointer';
+            }
+
+            // Block PVP register buttons if Solo is active
+            if (blueRegisterBtn) {
+                if (pvpBlocked) {
+                    blueRegisterBtn.disabled = true;
+                    blueRegisterBtn.style.opacity = '0.5';
+                    blueRegisterBtn.style.cursor = 'not-allowed';
+                } else {
+                    // Only re-enable if not already disabled by other logic
+                    const alreadyRegisteredBlue = hasRegisteredTeam && hasRegisteredTeam !== "blue";
+                    if (!alreadyRegisteredBlue && !blueRegisterBtn.classList.contains('disabled')) {
+                        blueRegisterBtn.disabled = false;
+                        blueRegisterBtn.style.opacity = '1';
+                        blueRegisterBtn.style.cursor = 'pointer';
+                    }
+                }
+            }
+
+            if (redRegisterBtn) {
+                if (pvpBlocked) {
+                    redRegisterBtn.disabled = true;
+                    redRegisterBtn.style.opacity = '0.5';
+                    redRegisterBtn.style.cursor = 'not-allowed';
+                } else {
+                    // Only re-enable if not already disabled by other logic
+                    const alreadyRegisteredRed = hasRegisteredTeam && hasRegisteredTeam !== "red";
+                    if (!alreadyRegisteredRed && !redRegisterBtn.classList.contains('disabled')) {
+                        redRegisterBtn.disabled = false;
+                        redRegisterBtn.style.opacity = '1';
+                        redRegisterBtn.style.cursor = 'pointer';
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
