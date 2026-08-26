@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Item Claims</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #modal {
+    display: none;
+    pointer-events: all;
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    width: 780px;
+    max-height: 80vh;
+    overflow: hidden;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px 0;
+    background: #141414;
+    border-bottom: 1px solid #2a2a2a;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  .modal-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e0e0e0;
+    letter-spacing: 0.5px;
+  }
+
+  .modal-meta {
+    font-size: 12px;
+    color: #666;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .close-btn:hover { color: #ccc; background: #1f1f1f; }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    width: 100%;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+
+  .tab:hover { color: #999; }
+
+  .tab.active {
+    color: #e0e0e0;
+    border-bottom: 2px solid #555;
+  }
+
+  .modal-body {
+    overflow-y: auto;
+    padding: 12px 16px;
+  }
+
+  .modal-body::-webkit-scrollbar { width: 5px; }
+  .modal-body::-webkit-scrollbar-track { background: #111; }
+  .modal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    text-align: center;
+    padding: 8px 10px;
+    color: #888;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid #222;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #1a1a1a;
+    transition: background 0.1s;
+  }
+
+  tbody tr:hover { background: #151515; }
+
+  tbody td {
+    padding: 10px 10px;
+    color: #ccc;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  .claim-id { font-family: monospace; color: #888; font-size: 12px; }
+  .item-name { color: #e0e0e0; font-weight: 500; }
+
+  .count {
+    display: inline-block;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .status-claimed {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #1a2e1a;
+    color: #4caf50;
+    border: 1px solid #2d4a2d;
+  }
+
+  .status-pending {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #2a1f0f;
+    color: #ff9800;
+    border: 1px solid #4a3520;
+  }
+
+  .metadata-cell { max-width: 160px; }
+
+  .metadata-tag {
+    display: inline-block;
+    background: #1a1a1a;
+    border: 1px solid #252525;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 10px;
+    color: #777;
+    margin: 1px;
+    font-family: monospace;
+  }
+
+  .delete-col { width: 36px; padding: 6px 4px !important; text-align: center; vertical-align: middle; }
+
+  .delete-btn {
+    background: #1f1010;
+    border: 1px solid #3a1a1a;
+    border-radius: 4px;
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .delete-btn:hover { background: #2e1010; border-color: #5a2a2a; }
+  .delete-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #555;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div id="modal">
+  <div class="modal-header">
+    <div class="header-top">
+      <span class="modal-title">Item Claims</span>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="modal-meta" id="claim-count"></span>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('active')">Active</div>
+      <div class="tab" onclick="switchTab('history')">History</div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <table id="active-table">
+      <thead>
+        <tr>
+          <th>Claim ID</th>
+          <th>Item</th>
+          <th>Count</th>
+          <th>Metadata</th>
+          <th class="delete-col"></th>
+        </tr>
+      </thead>
+      <tbody id="active-body"></tbody>
+    </table>
+    <table id="history-table" style="display:none">
+      <thead>
+        <tr>
+          <th>Claim ID</th>
+          <th>Item</th>
+          <th>Count</th>
+          <th>Metadata</th>
+          <th>Status</th>
+          <th>Claimed At</th>
+        </tr>
+      </thead>
+      <tbody id="history-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById('modal');
+  const countEl = document.getElementById('claim-count');
+  let currentTab = 'active';
+
+  function closeModal() {
+    modal.style.display = 'none';
+    fetch('https://itemclaims/close', { method: 'POST', body: JSON.stringify({}) });
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab').forEach((el, i) => {
+      el.classList.toggle('active', (i === 0 && tab === 'active') || (i === 1 && tab === 'history'));
+    });
+    document.getElementById('active-table').style.display = tab === 'active' ? '' : 'none';
+    document.getElementById('history-table').style.display = tab === 'history' ? '' : 'none';
+  }
+
+  function renderMetadata(meta) {
+    if (!meta || typeof meta !== 'object' || Object.keys(meta).length === 0) {
+      return '<span style="color:#444;font-size:11px">—</span>';
+    }
+    return Object.entries(meta)
+      .map(([k, v]) => `<span class="metadata-tag">${k}: ${v}</span>`)
+      .join('');
+  }
+
+  function buildRow(c, includeDelete) {
+    const tr = document.createElement('tr');
+    tr.dataset.claimId = c.claim_id;
+    tr.innerHTML = `
+      <td><span class="claim-id">${c.claim_id}</span></td>
+      <td><span class="item-name">${c.item_name}</span></td>
+      <td><span class="count">${c.item_count}</span></td>
+      <td class="metadata-cell">${renderMetadata(c.item_metadata)}</td>
+      ${includeDelete ? `<td class="delete-col"><button class="delete-btn" onclick="deleteClaim('${c.claim_id}', this)" title="Delete claim"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#e07070"><path d="M9 3h6l1 1h4v2H4V4h4L9 3zm-2 5h10l-1 13H8L7 8zm2 2v9h1v-9H9zm3 0v9h1v-9h-1z"/></svg></button></td>` : `<td class="status-col"><div class="status-claimed">Claimed</div></td><td><span class="count">${c.redeemed_at ? new Date(c.redeemed_at).toLocaleString(undefined, {dateStyle:'short',timeStyle:'short'}) : '—'}</span></td>`}
+    `;
+    return tr;
+  }
+
+  window.addEventListener('message', function(e) {
+    const data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+    if (!data || data.action !== 'showClaims') return;
+
+    const claims = data.claims;
+    const active = claims.filter(c => !c.claimed);
+    const history = claims.filter(c => c.claimed);
+
+    const activeBody = document.getElementById('active-body');
+    const historyBody = document.getElementById('history-body');
+    activeBody.innerHTML = '';
+    historyBody.innerHTML = '';
+
+    if (active.length === 0) {
+      activeBody.innerHTML = '<tr><td colspan="5" class="empty-state">No active claims.</td></tr>';
+    } else {
+      active.forEach(c => activeBody.appendChild(buildRow(c, true)));
+    }
+
+    if (history.length === 0) {
+      historyBody.innerHTML = '<tr><td colspan="6" class="empty-state">No claim history.</td></tr>';
+    } else {
+      history.forEach(c => historyBody.appendChild(buildRow(c, false)));
+    }
+
+    countEl.textContent = `${active.length} active · ${history.length} history`;
+
+    switchTab('active');
+
+    modal.style.display = 'flex';
+  });
+
+  function deleteClaim(claimId, btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.3';
+    fetch('https://itemclaims/deleteClaim', {
+      method: 'POST',
+      body: JSON.stringify({ claimId: claimId })
+    }).then(r => r.json()).then(function(success) {
+      if (success) {
+        btn.closest('tr').remove();
+      } else {
+        btn.disabled = false;
+        btn.style.opacity = '';
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+</body>
+</html>

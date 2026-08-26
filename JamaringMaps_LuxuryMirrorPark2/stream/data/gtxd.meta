@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CMapParentTxds>
+  <txdRelationships>
+	<Item>
+      <parent>globalroads</parent>
+      <child>mapdetail</child>
+    </Item>
+	<Item>
+      <parent>globalfurgrass</parent>
+      <child>dt1_09_fur</child>
+    </Item>
+  </txdRelationships>
+</CMapParentTxds>

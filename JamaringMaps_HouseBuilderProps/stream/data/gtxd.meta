@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CMapParentTxds>
+  <txdRelationships>
+	<Item>
+      <parent>jamaring_housebuilder</parent>
+      <child>mapdetail</child>
+    </Item>
+  </txdRelationships>
+</CMapParentTxds>
