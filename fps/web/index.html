@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Performance</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<div class="overlay" id="overlay" aria-hidden="true">
+		<div class="panel" role="dialog" aria-label="Performance settings">
+
+			<header class="panel__header">
+				<div class="panel__titles">
+					<h1 class="panel__title">Performance</h1>
+					<p class="panel__subtitle">Tune what your game draws. Settings save automatically.</p>
+				</div>
+
+				<div class="fps" id="fps" title="Live framerate">
+					<span class="fps__value" id="fps-value">--</span>
+					<span class="fps__unit">FPS</span>
+				</div>
+
+				<button class="icon-button" id="close" type="button" aria-label="Close">✕</button>
+			</header>
+
+			<div class="presets" id="presets"></div>
+
+			<div class="panel__body">
+				<nav class="tabs" id="tabs"></nav>
+				<div class="settings" id="settings"></div>
+			</div>
+
+			<footer class="panel__footer">
+				<span class="footer__hint" id="footer-hint">Press <kbd>Esc</kbd> to discard changes.</span>
+				<div class="footer__actions">
+					<button class="button button--ghost" id="reset" type="button">Reset to default</button>
+					<button class="button button--ghost" id="benchmark" type="button">Benchmark all</button>
+					<button class="button button--primary" id="apply" type="button">Apply</button>
+				</div>
+			</footer>
+
+			<div class="scrim" id="results" hidden>
+				<div class="scrim__card scrim__card--wide">
+					<h2 class="scrim__title">Benchmark results</h2>
+					<p class="scrim__sub" id="result-summary"></p>
+
+					<div class="verdicts" id="verdicts"></div>
+					<div class="customs" id="customs"></div>
+
+					<div class="result-scroll">
+						<table class="result">
+							<thead>
+								<tr>
+									<th>Setting</th>
+									<th>Average</th>
+									<th>1% low</th>
+									<th>Δ average</th>
+								</tr>
+							</thead>
+							<tbody id="result-rows"></tbody>
+						</table>
+					</div>
+
+					<p class="scrim__note">Every setting measured on its own, then every preset as a whole, from a
+						fixed straight-line camera with your inputs frozen. Sampled for 5s after a 4s warmup so the
+						LOD streamer settles. Differences under about 2 FPS are noise.</p>
+
+					<div class="scrim__actions">
+						<button class="button button--ghost" id="result-back" type="button">Back to settings</button>
+						<button class="button button--ghost" id="result-suggested" type="button" hidden>Use suggested</button>
+						<button class="button button--primary" id="result-apply" type="button">Apply my settings</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Lives outside the overlay: during a run the panel is hidden so it neither occludes
+	     the benchmark camera nor adds its own draw cost to the measurements. -->
+	<div class="bench-hud" id="bench-hud" hidden>
+		<div class="bench-hud__head">
+			<span class="bench-hud__label" id="bench-label">Vanilla defaults</span>
+			<span class="bench-hud__count" id="bench-count">1 / 16</span>
+		</div>
+		<div class="progress"><div class="progress__bar" id="bench-bar"></div></div>
+		<div class="bench-hud__foot">
+			<span id="bench-stage">Letting LODs settle · 4s</span>
+			<span class="bench-hud__abort">Press <kbd>Esc</kbd> to abort</span>
+		</div>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+
+</html>

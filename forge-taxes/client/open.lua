@@ -1,0 +1,4 @@
+-- -- Here you can add client functions. We needed it for okokBilling billing
+-- RegisterNetEvent('forge-taxes:okokBilling', function(source, amount)
+--     TriggerServerEvent('okokBilling:CreateCustomInvoice', source, amount, 'Tax Bill', 'Government')
+-- end)

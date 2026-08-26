@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Forge Taxes</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="taxes">
+      <button class="taxes__close">X</button>
+      <div class="taxes__top">
+        <div class="taxes__title">
+          <h4 data-i18n="heading">TAXES</h4>
+          <span data-i18n="slogan">The state is all of us</span>
+        </div>
+        <div class="taxes__user">
+          <span id="pname"></span>
+          <img id="userimage" src="assets/images/avatar.png" alt="User Image" />
+        </div>
+      </div>
+      <div class="taxes__middle">
+        <div class="taxes__status" data-i18n="statusText">High class</div>
+        <img src="assets/images/money.png" alt="Money Image" />
+      </div>
+      <div class="taxes__worth">
+        <div class="taxes__worth-item">
+          <i class="fas fa-wallet"></i>
+          <div class="taxes__worth-info">
+            <span>Cash</span>
+            <h5><span id="cashBalance">0</span></h5>
+          </div>
+        </div>
+        <div class="taxes__worth-item">
+          <i class="fas fa-university"></i>
+          <div class="taxes__worth-info">
+            <span>Bank</span>
+            <h5><span id="bankBalance">0</span></h5>
+          </div>
+        </div>
+        <div class="taxes__worth-total">
+          <span>Net Worth</span>
+          <h4><span id="totalWorth">0</span></h4>
+        </div>
+      </div>
+      <!-- <div class="taxes__bottom">
+        <p data-i18n="description">
+          Depending on your wealth, you will be HIGH, MIDDLE, or LOW CLASS
+        </p>
+        <h6 data-i18n="paymentText">
+          TIME FOR THE NEXT <br />
+          <span> NEXT TAX PAYMENT:</span>
+        </h6>
+        <div class="taxes__timer">
+          <div class="taxes__timer-loader" style="display: none;">
+              <div class="loader"></div>
+          </div>
+          <div class="taxes__timer-content">
+              <div class="taxes__timer-hours">00</div>
+              :
+              <div class="taxes__timer-minutes">00</div>
+              <small>H</small>
+          </div>
+      </div> -->
+      </div>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.15.2/i18next.min.js"
+      integrity="sha512-8ANNUVMWPf6aWGXZqDhS4OXJWBCRxfjlW7lKfupuiG1FZah0ST6LiI2qnEb1L5mp05v/+0hn3s2FO4EwIbIgfA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js"
+      integrity="sha512-8/RTkAM23B3lQzi6fmPs+Yf9qhIHzrzRpeSZsBsQ8OEmo95mbVp+68dB647VDCuyQIBbF+OIbS9b30aTWUkoog=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
