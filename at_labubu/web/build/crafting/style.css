@@ -1,0 +1,389 @@
+/* =========================================================================
+   BuBu Workshop — pastel kawaii crafting UI
+   All classes prefixed .bubu- to avoid collision with the shop React app.
+   ========================================================================= */
+
+#bubu-craft-root {
+    --bubu-pink-50:  #fff4f7;
+    --bubu-pink-100: #ffe4ee;
+    --bubu-pink-200: #ffc6db;
+    --bubu-pink-300: #ff9dc1;
+    --bubu-pink-500: #ff5fa0;
+    --bubu-pink-700: #c8336d;
+    --bubu-cream:    #fff9f0;
+    --bubu-ink:      #3a2436;
+    --bubu-ink-soft: #6a4d60;
+    --bubu-mint:     #b8f0d6;
+    --bubu-lemon:    #ffef9e;
+    --bubu-sky:      #bde4ff;
+    --bubu-lilac:    #e3d1ff;
+
+    /* rarity colors */
+    --bubu-r-common:    #9ad3a6;
+    --bubu-r-uncommon:  #c5c9cf;
+    --bubu-r-rare:      #b18cff;
+    --bubu-r-epic:      #6aa8ff;
+    --bubu-r-legendary: #f2cc64;
+    --bubu-r-mythic:    #ff6ff5;
+
+    --bubu-shadow-soft:   0 6px 20px -6px rgba(0, 0, 0, 0.5);
+    --bubu-shadow-strong: 0 30px 80px -10px rgba(0, 0, 0, 0.75);
+    --bubu-radius:    22px;
+    --bubu-radius-sm: 14px;
+
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999; /* above everything */
+    display: grid;
+    place-items: center;
+    font-family: 'Nunito', sans-serif;
+    color: var(--bubu-ink);
+    user-select: none;
+    /* heavy dark backdrop + blur so the game + any other UI behind us
+       doesn't bleed through and wash out the panel */
+    background: rgba(10, 6, 14, 0.78);
+    backdrop-filter: blur(8px) saturate(0.9);
+    -webkit-backdrop-filter: blur(8px) saturate(0.9);
+    /* create a new stacking/isolation context so stray global CSS
+       can't affect us */
+    isolation: isolate;
+    animation: bubuFadeBg 0.35s ease-out;
+}
+/* Reset inherited styles from the host page (fontawesome / react bundle) */
+#bubu-craft-root,
+#bubu-craft-root * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    line-height: normal;
+}
+#bubu-craft-root.hidden { display: none !important; }
+
+/* Hide the shop UI while crafting is open, so there's no bleed-through */
+body:has(#bubu-craft-root:not(.hidden)) #root {
+    visibility: hidden;
+}
+
+@keyframes bubuFadeBg { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Panel ---------- */
+.bubu-panel {
+    width: min(1080px, 90vw);
+    height: min(680px, 88vh);
+    background: linear-gradient(165deg, var(--bubu-cream) 0%, var(--bubu-pink-50) 100%);
+    border-radius: var(--bubu-radius);
+    box-shadow: var(--bubu-shadow-strong), 0 0 0 4px rgba(255, 255, 255, 0.6), 0 0 0 8px rgba(255, 157, 193, 0.25);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: bubuPanelIn 0.45s cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes bubuPanelIn {
+    from { transform: scale(0.92) translateY(20px); opacity: 0; }
+    to   { transform: scale(1) translateY(0);      opacity: 1; }
+}
+.bubu-panel::before, .bubu-panel::after {
+    content: ''; position: absolute; pointer-events: none; border-radius: 50%;
+    filter: blur(40px); opacity: 0.6; z-index: 0;
+}
+.bubu-panel::before { width: 300px; height: 300px; background: var(--bubu-pink-200); top: -120px; right: -80px; }
+.bubu-panel::after  { width: 260px; height: 260px; background: var(--bubu-lilac);     bottom: -120px; left: -80px; }
+
+/* ---------- Header ---------- */
+.bubu-panel__header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 28px 18px;
+    border-bottom: 2px dashed rgba(255, 157, 193, 0.35);
+    position: relative; z-index: 1;
+}
+.bubu-header-left { display: flex; align-items: center; gap: 14px; }
+.bubu-logo-dot {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--bubu-pink-300) 60%, var(--bubu-pink-500));
+    box-shadow: var(--bubu-shadow-soft), inset 0 -4px 6px rgba(200, 51, 109, 0.25);
+    animation: bubuWobble 3.5s ease-in-out infinite;
+}
+@keyframes bubuWobble {
+    0%, 100% { transform: rotate(-6deg); }
+    50%      { transform: rotate(6deg); }
+}
+.bubu-title {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700; font-size: 28px; letter-spacing: -0.5px;
+    color: var(--bubu-pink-700);
+    line-height: 1;
+}
+.bubu-subtitle { font-size: 13px; color: var(--bubu-ink-soft); margin-top: 4px; font-weight: 600; }
+
+.bubu-close-btn {
+    width: 38px; height: 38px; border-radius: 50%; border: none;
+    background: var(--bubu-pink-100); color: var(--bubu-pink-700);
+    display: grid; place-items: center; cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s;
+}
+.bubu-close-btn:hover { background: var(--bubu-pink-200); transform: rotate(90deg) scale(1.05); }
+
+/* ---------- Layout ---------- */
+.bubu-layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px 24px 24px;
+    min-height: 0;
+    min-width: 0;
+    position: relative; z-index: 1;
+}
+
+/* ---------- Recipe list ---------- */
+.bubu-recipe-list {
+    display: flex; flex-direction: column; gap: 10px;
+    overflow-y: auto; overflow-x: hidden;
+    padding: 2px 12px 2px 2px; /* right padding clears scrollbar + hover-shift */
+    scrollbar-width: thin; scrollbar-color: var(--bubu-pink-300) transparent;
+    min-width: 0;
+}
+.bubu-recipe-list::-webkit-scrollbar { width: 6px; }
+.bubu-recipe-list::-webkit-scrollbar-thumb { background: var(--bubu-pink-300); border-radius: 10px; }
+
+.bubu-recipe-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: var(--bubu-radius-sm);
+    background: #fff;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s, box-shadow 0.18s;
+    position: relative;
+    min-width: 0; /* allow flex children to shrink */
+}
+.bubu-recipe-card:hover { transform: translateX(2px); box-shadow: var(--bubu-shadow-soft); }
+.bubu-recipe-card.active {
+    border-color: var(--bubu-pink-300);
+    box-shadow: var(--bubu-shadow-soft);
+    transform: translateX(2px);
+}
+
+.bubu-recipe-card__thumb {
+    width: 48px; height: 48px; border-radius: 12px;
+    flex-shrink: 0;
+    background: var(--bubu-pink-50) center/70% no-repeat;
+    border: 2px solid var(--rarity-color, var(--bubu-r-common));
+    position: relative;
+}
+.bubu-recipe-card__thumb::after {
+    content: ''; position: absolute; inset: -4px;
+    border-radius: 14px;
+    background: var(--rarity-color, var(--bubu-r-common));
+    opacity: 0.18; z-index: -1;
+    filter: blur(6px);
+}
+
+.bubu-recipe-card__info { flex: 1; min-width: 0; }
+.bubu-recipe-card__name {
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 15px;
+    color: var(--bubu-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bubu-recipe-card__rarity {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--rarity-color, var(--bubu-r-common));
+    margin-top: 2px;
+}
+.bubu-recipe-card__check {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 12px;
+    background: var(--bubu-pink-100); color: var(--bubu-pink-700);
+    flex-shrink: 0;
+    opacity: 0.4;
+    transition: opacity 0.2s, background 0.2s;
+}
+.bubu-recipe-card.craftable .bubu-recipe-card__check {
+    opacity: 1;
+    background: var(--bubu-mint);
+    color: #1f7a4a;
+}
+
+/* ---------- Detail ---------- */
+.bubu-detail {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: var(--bubu-radius);
+    padding: 28px;
+    display: flex; flex-direction: column;
+    min-height: 0; overflow-y: auto;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    scrollbar-width: thin; scrollbar-color: var(--bubu-pink-300) transparent;
+}
+.bubu-detail::-webkit-scrollbar { width: 6px; }
+.bubu-detail::-webkit-scrollbar-thumb { background: var(--bubu-pink-300); border-radius: 10px; }
+
+.bubu-detail-hero {
+    display: flex; align-items: center; gap: 18px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed rgba(255, 157, 193, 0.35);
+    margin-bottom: 20px;
+}
+.bubu-detail-thumb {
+    width: 92px; height: 92px; border-radius: 20px;
+    background: #fff center/75% no-repeat;
+    border: 3px solid var(--rarity-color, var(--bubu-r-common));
+    box-shadow: 0 0 30px -5px var(--rarity-color, var(--bubu-r-common));
+    position: relative;
+    animation: bubuBob 3s ease-in-out infinite;
+}
+@keyframes bubuBob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-6px) rotate(2deg); }
+}
+.bubu-detail-thumb::before {
+    content: '✨'; position: absolute; top: -8px; right: -8px;
+    font-size: 22px; animation: bubuTwinkle 2s ease-in-out infinite;
+}
+@keyframes bubuTwinkle {
+    0%, 100% { transform: scale(1) rotate(0); opacity: 1; }
+    50%      { transform: scale(1.3) rotate(20deg); opacity: 0.6; }
+}
+
+.bubu-detail-heading { flex: 1; }
+.bubu-detail-name {
+    font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 26px;
+    color: var(--bubu-ink); line-height: 1.1;
+}
+.bubu-detail-rarity {
+    display: inline-block; margin-top: 8px;
+    padding: 6px 18px; border-radius: 999px;
+    font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+    background: var(--rarity-color, var(--bubu-r-common));
+    color: #fff;
+    box-shadow: 0 4px 10px -2px var(--rarity-color, var(--bubu-r-common));
+    line-height: 1.4;
+}
+
+.bubu-ingredients-label {
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px;
+    color: var(--bubu-ink-soft); text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+}
+.bubu-ingredients-label::before {
+    content: ''; width: 6px; height: 6px; background: var(--bubu-pink-500); border-radius: 50%;
+}
+
+.bubu-ingredients-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+    margin-bottom: 24px;
+}
+.bubu-ingredient {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: var(--bubu-radius-sm);
+    background: #fff;
+    border: 2px solid transparent;
+    transition: all 0.25s;
+    opacity: 0.45;
+}
+.bubu-ingredient.ok {
+    opacity: 1;
+    border-color: var(--bubu-mint);
+    background: linear-gradient(135deg, #fff, #f0fff6);
+}
+.bubu-ingredient.ok .bubu-ingredient-count { color: #1f7a4a; }
+.bubu-ingredient-thumb {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--bubu-pink-50) center/contain no-repeat;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 157, 193, 0.2);
+}
+.bubu-ingredient-info { flex: 1; min-width: 0; }
+.bubu-ingredient-name {
+    font-size: 13px; font-weight: 700; color: var(--bubu-ink);
+    text-transform: capitalize;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bubu-ingredient-count {
+    font-size: 12px; font-weight: 700; color: var(--bubu-ink-soft);
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+}
+
+/* Craft button */
+.bubu-craft-btn {
+    margin-top: auto;
+    padding: 16px 24px;
+    border: none; border-radius: 16px;
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 18px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--bubu-pink-500), #ff8ab3);
+    cursor: pointer;
+    box-shadow: 0 10px 25px -8px var(--bubu-pink-500), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease, box-shadow 0.15s, filter 0.2s;
+    letter-spacing: 0.5px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.bubu-craft-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -8px var(--bubu-pink-500), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+.bubu-craft-btn:active:not(:disabled) { transform: translateY(1px); }
+.bubu-craft-btn:disabled {
+    background: #e6d6dd;
+    color: var(--bubu-ink-soft);
+    cursor: not-allowed;
+    box-shadow: none;
+    filter: grayscale(0.3);
+}
+.bubu-craft-btn.crafting {
+    background: linear-gradient(135deg, var(--bubu-lilac), var(--bubu-sky));
+    color: var(--bubu-ink);
+    cursor: progress;
+}
+.bubu-craft-btn.crafting::after {
+    content: ''; width: 16px; height: 16px;
+    border: 3px solid var(--bubu-ink-soft); border-top-color: transparent;
+    border-radius: 50%;
+    animation: bubuSpin 0.7s linear infinite;
+}
+@keyframes bubuSpin { to { transform: rotate(360deg); } }
+
+/* Sparkles background */
+.bubu-sparkles {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.bubu-sparkles::before, .bubu-sparkles::after {
+    content: '✿ ❀ ✦ ✿ ❀ ✦ ✿ ❀ ✦ ✿';
+    position: absolute;
+    font-size: 22px; color: var(--bubu-pink-200);
+    opacity: 0.5;
+    letter-spacing: 80px;
+    white-space: nowrap;
+    animation: bubuDrift 40s linear infinite;
+}
+.bubu-sparkles::before { top: 15%; }
+.bubu-sparkles::after  { top: 65%; animation-duration: 55s; animation-direction: reverse; color: var(--bubu-lilac); }
+@keyframes bubuDrift {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+}
+
+/* Confetti */
+.bubu-confetti {
+    position: fixed; inset: 0; pointer-events: none; z-index: 100;
+    display: none;
+}
+.bubu-confetti.active { display: block; }
+.bubu-confetti__bit {
+    position: absolute; top: 50%; left: 50%;
+    width: 10px; height: 10px; border-radius: 2px;
+    animation: bubuBurst 1.4s cubic-bezier(.15, .8, .3, 1) forwards;
+}
+@keyframes bubuBurst {
+    0%   { transform: translate(-50%, -50%) scale(0.4) rotate(0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot)); opacity: 0; }
+}
+
+.bubu-empty-state {
+    flex: 1; display: grid; place-items: center; text-align: center;
+    color: var(--bubu-ink-soft); font-weight: 700;
+}
