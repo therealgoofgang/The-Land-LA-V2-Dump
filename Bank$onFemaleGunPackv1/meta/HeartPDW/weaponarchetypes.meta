@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>heartpdw_scope</modelName>
+			<txdName>heartpdw_scope</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>heartpdw_mag2</modelName>
+			<txdName>heartpdw_mag2</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>heartpdw_mag1</modelName>
+			<txdName>heartpdw_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>heartpdw</modelName>
+			<txdName>heartpdw</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>pinkump_supp</modelName>
+			<txdName>pinkump_supp</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>pinkump_mag2</modelName>
+			<txdName>pinkump_mag2</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>pinkump_mag1</modelName>
+			<txdName>pinkump_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>pinkump</modelName>
+			<txdName>pinkump</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

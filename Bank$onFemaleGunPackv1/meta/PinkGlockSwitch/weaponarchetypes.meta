@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>pinkswitch_mag2</modelName>
+			<txdName>pinkswitch_mag2</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>pinkswitch_flsh</modelName>
+			<txdName>pinkswitch_flsh</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>pinkswitch</modelName>
+			<txdName>pinkswitch</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

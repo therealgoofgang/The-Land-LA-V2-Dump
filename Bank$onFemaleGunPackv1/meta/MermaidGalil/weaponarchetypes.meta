@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>mermaidgalil_supp</modelName>
+			<txdName>mermaidgalil_supp</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>mermaidgalil_scope</modelName>
+			<txdName>mermaidgalil_scope</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>mermaidgalil_mag1</modelName>
+			<txdName>mermaidgalil_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>mermaidgalil</modelName>
+			<txdName>mermaidgalil</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>hkarp_supp</modelName>
+			<txdName>hkarp_supp</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>hkarp_scope</modelName>
+			<txdName>hkarp_scope</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>hkarp_mag2</modelName>
+			<txdName>hkarp_mag2</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>hkarp_mag1</modelName>
+			<txdName>hkarp_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>hkarp</modelName>
+			<txdName>hkarp</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+
