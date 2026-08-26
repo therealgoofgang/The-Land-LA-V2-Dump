@@ -1,0 +1,12 @@
+-- ============================================================
+--  RETIRED (2026-08-04): this file used to spawn an adult dog
+--  ped in the world when a puppy item was used - kennel dogs are
+--  no longer usable as companion pets. Companions are sold by
+--  nn_petshop (Paws of Sandy Shores); kennel dogs exist to be
+--  raised, bred and sold.
+--
+--  The puppy-use flow (name -> kennel placement -> care) lives in
+--  cl_lifecycle.lua. This file intentionally registers nothing.
+--  (It also used to double-fire kennels:server:registerFromPuppy
+--  alongside cl_lifecycle - that bug retires with it.)
+-- ============================================================
