@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMapParentTxds>
+ <txdRelationships>
+<Item>
+  <parent>nteamcaffemectxt1</parent>
+  <child>nteamcaffemectxt</child>
+</Item>
+<Item>
+  <parent>nteamcaffemectxt2</parent>
+  <child>nteamcaffemectxt1</child>
+</Item>
+ </txdRelationships>
+</CMapParentTxds>
