@@ -1,0 +1,5 @@
+AddTextEntry("WEAPON_JUNETEENTHSWITCH", "Juneteenth Switch")
+AddTextEntry("WEAPON_JUNETEENTHPURPAR", "Juneteenth Purp AR")
+AddTextEntry("WEAPON_JUNETEENTHSEMI", "Juneteenth Semi")
+AddTextEntry("WEAPON_JUNETEENTHSMG", "Juneteenth SMG")
+AddTextEntry("WEAPON_JUNETEENTHAR", "Juneteenth AR")

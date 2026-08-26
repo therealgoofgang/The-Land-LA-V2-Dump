@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>juneteenthpurpar_mag1</modelName>
+			<txdName>juneteenthpurpar_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthpurpar</modelName>
+			<txdName>juneteenthpurpar</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>w_ar_specialcarbine</modelName>
+			<txdName>w_ar_specialcarbine</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>w_ar_specialcarbine_Mag1</modelName>
+			<txdName>w_ar_specialcarbine_Mag1</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>w_ar_specialcarbine_Mag2</modelName>
+			<txdName>w_ar_specialcarbine_Mag2</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthsemi_mag1</modelName>
+			<txdName>juneteenthsemi_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthsemi</modelName>
+			<txdName>juneteenthsemi</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>w_pi_heavypistol</modelName>
+			<txdName>w_pi_heavypistol</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>w_pi_heavypistol_Mag1</modelName>
+			<txdName>w_pi_heavypistol_Mag1</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>w_pi_heavypistol_Mag2</modelName>
+			<txdName>w_pi_heavypistol_Mag2</txdName>
+			<ptfxAssetName>null</ptfxAssetName>
+			<lodDist value="50"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthswitch_mag1</modelName>
+			<txdName>juneteenthswitch_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthswitch</modelName>
+			<txdName>juneteenthswitch</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthsmg_supp_01</modelName>
+			<txdName>juneteenthsmg_supp_01</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthsmg_mag1</modelName>
+			<txdName>juneteenthsmg_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthsmg</modelName>
+			<txdName>juneteenthsmg</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthar_mag1</modelName>
+			<txdName>juneteenthar_mag1</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>juneteenthar</modelName>
+			<txdName>juneteenthar</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+
