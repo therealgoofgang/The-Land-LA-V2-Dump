@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="root" class="root">
+        <div class="stage">
+
+            <!-- Tablet -->
+            <div class="tablet" id="tablet">
+
+                <!-- live screen, seated inside the frame's cutout -->
+                <div class="screen">
+
+                    <!-- ── stage 1: tablet ── -->
+                    <div id="tabletView">
+                        <div class="hud">
+                            <div class="hud-row">
+                                <span class="hud-label">BYPASS</span>
+                                <span class="hud-objective" id="objective">Initializing…</span>
+                                <span class="hud-steps" id="stepCounter">1 / 3</span>
+                            </div>
+                            <div class="hud-bar">
+                                <div class="hud-bar-fill" id="timerFill"></div>
+                            </div>
+                        </div>
+
+                        <!-- app grid (populated by script.js) -->
+                        <div class="apps" id="apps"></div>
+                    </div>
+
+                    <!-- ── stage 2: wiring ── -->
+                    <div id="wireView" class="wireview">
+                        <div class="hud">
+                            <div class="hud-row">
+                                <span class="hud-label">REWIRE</span>
+                                <span class="hud-objective">Connect each wire to its matching colour</span>
+                                <span class="hud-steps" id="wireProgress">0 / 4</span>
+                            </div>
+                            <div class="hud-bar" id="wireBar" style="display:none">
+                                <div class="hud-bar-fill" id="wireTimerFill"></div>
+                            </div>
+                        </div>
+
+                        <div class="wire-panel" id="wirePanel">
+                            <div class="wire-rail left"></div>
+                            <div class="wire-col left" id="wireLeft"></div>
+                            <div class="loom">
+                                <span class="loom-cable c1"></span>
+                                <span class="loom-cable c2"></span>
+                                <span class="clamp top"></span>
+                                <span class="clamp bottom"></span>
+                            </div>
+                            <div class="wire-col right" id="wireRight"></div>
+                            <div class="wire-rail right"></div>
+                            <svg class="wire-svg" id="wireSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+                        </div>
+                    </div>
+
+                    <!-- status bar -->
+                    <div class="statusbar">
+                        <div class="nav-icons">
+                            <span class="nav-dot"></span>
+                            <span class="nav-back"></span>
+                            <span class="nav-home"></span>
+                            <span class="nav-recent"></span>
+                        </div>
+                        <div class="status-right">
+                            <span class="vci-tag">VCi</span>
+                            <span class="battery" id="battery">83%</span>
+                            <span class="clock" id="clock">4:56</span>
+                        </div>
+                    </div>
+
+                    <!-- screen gloss + full-screen result flash -->
+                    <div class="gloss"></div>
+                    <div class="flash" id="flash"></div>
+                </div>
+
+                <!-- photoreal rugged shell, drawn on top of the screen -->
+                <img class="frame" src="assets/tab-outter.png" alt="" draggable="false">
+            </div>
+
+        </div>
+
+        <div class="hint">Tap the requested app · <kbd>ESC</kbd> to cancel</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

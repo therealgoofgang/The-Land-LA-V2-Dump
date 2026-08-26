@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMapParentTxds>
+ <txdRelationships>
+   <Item>
+   <parent>doiidaum_lovetunnel_dinner_02</parent>
+   <child>doiidaum_lovetunnel_dinner_01</child>
+  </Item>
+   <Item>
+   <parent>doiidaum_lovetunnel_dinner_01</parent>
+   <child>doiidaum_lovetunnel_dinner</child>
+  </Item>
+   <Item>
+   <parent>doiidaum_lovetunnel_dinner</parent>
+   <child>doiidaum_lovetunnel_01</child>
+  </Item>
+   <Item>
+   <parent>doiidaum_lovetunnel_01</parent>
+   <child>doiidaum_lovetunnel</child>
+  </Item>
+ </txdRelationships>
+</CMapParentTxds>
+
