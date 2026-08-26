@@ -1,0 +1,1 @@
+TriggerEvent('chat:addSuggestion', '/convertpinkdiamonds', 'Convert ALL your pink diamonds in your inventory to black diamonds')
